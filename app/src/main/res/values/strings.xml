@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Project</string>
+    <string name="donate">Donate</string>
+    <string name="cnic">CNIC:</string>
+    <string name="beneficiary_name">Beneficiary Name:</string>
+    <string name="enter_beneficiary_name">Enter Beneficiary Name</string>
+    <string name="bank_name">Bank Name:</string>
+    <string name="enter_bank_name">Enter Bank Name</string>
+    <string name="bank_account_id">Bank Account ID:</string>
+    <string name="enter_cnic">Enter CNIC</string>
+    <string name="enter_bank_account_id">Enter Bank Account ID</string>
+    <string name="amount">Amount:</string>
+    <string name="enter_amount">Enter Amount</string>
+</resources>
