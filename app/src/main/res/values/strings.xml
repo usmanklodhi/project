@@ -11,4 +11,13 @@
     <string name="enter_bank_account_id">Enter Bank Account ID</string>
     <string name="amount">Amount:</string>
     <string name="enter_amount">Enter Amount</string>
+    <string-array name="charityName">
+        <item>Edhi</item>
+    </string-array>
+    <string-array name="pastCharityName">
+        <item>Edhi</item>
+    </string-array>
+    <string-array name="pastCharityDescription">
+        <item>Donated 10,000 Rs to Edhi ambulance network</item>
+    </string-array>
 </resources>
