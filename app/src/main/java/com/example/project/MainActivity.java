@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
-    public Button btnSignUpAdmin;
     public Button btnSignUpUser;
+    public Button btnLoginUser;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -21,19 +21,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate");
-        /*
-        btn = (Button) findViewById(R.id.signupAsAdminBtn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent= new Intent(MainActivity.this,SecondActivity.class);
-                startActivity(intent);
-            }
-        });
-        */
-        btnSignUpUser = findViewById(R.id.signupAsDonorBtn);
+
+        btnSignUpUser = findViewById(R.id.CreateAnAccountBtn);
         btnSignUpUser.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, ThirdActivity.class));
+        });
+        btnLoginUser = findViewById(R.id.LoginBtnOnMainPage);
+        btnLoginUser.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
         });
     }
 }

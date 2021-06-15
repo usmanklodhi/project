@@ -63,6 +63,7 @@ public class ThirdActivity extends AppCompatActivity {
                     mydb.addUser(user);
                     showMessage("User Added with Name: " + user.getFullName());
                     //Open the corresponding activity
+                    startActivity(new Intent(ThirdActivity.this, DonationPageActivity.class));
                 }
             }
         });
