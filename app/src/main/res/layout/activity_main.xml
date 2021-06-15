@@ -6,27 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <include layout="@layout/app_bar"></include>
-
     <Button
-        android:id="@+id/signupAsAdminBtn"
+        android:id="@+id/LoginBtnOnMainPage"
         android:layout_width="280dp"
         android:layout_height="55dp"
-        android:text="Signup as an admin"
+        android:layout_marginBottom="168dp"
+        android:text="Login"
         app:backgroundTint="#009688"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.639" />
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintVertical_bias="0.153" />
+
+    <include layout="@layout/app_bar"></include>
 
     <Button
-        android:id="@+id/signupAsDonorBtn"
+        android:id="@+id/CreateAnAccountBtn"
         android:layout_width="280dp"
         android:layout_height="55dp"
-        android:layout_marginBottom="144dp"
-        android:text="Signup as a donor"
+        android:layout_marginBottom="248dp"
+        android:text="Create an Account"
         app:backgroundTint="#009688"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
                 String uPassword = password.getText().toString();
                 if (mydb.doesUserExist(uEmailId, uPassword)) {
                     showMessage("Sign in successful");
+                    startActivity(new Intent(LoginActivity.this, DonationPageActivity.class));
                 } else {
                     showMessage("Sign in failed");
                 }
