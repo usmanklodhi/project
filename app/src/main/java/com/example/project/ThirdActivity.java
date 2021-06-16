@@ -54,17 +54,26 @@ public class ThirdActivity extends AppCompatActivity {
                 String uName = name.getText().toString();
                 String uPassword = password.getText().toString();
                 String uConfirmPassword = confirmPassword.getText().toString();
-                //Leave confirm password for now
 
-                if (!uPassword.equals(uConfirmPassword)) {
-                    showMessage("Password Not matching");
+                if (uEmailAddress.equals("") || uName.equals("") || uPassword.equals("")) {
+                    showMessage("All fields are required!");
                 } else {
-                    User user = new User(uEmailAddress, uName, uPassword, false);
-                    mydb.addUser(user);
-                    showMessage("User Added with Name: " + user.getFullName());
-                    //Open the corresponding activity
-                    startActivity(new Intent(ThirdActivity.this, DonationPageActivity.class));
+                    if (!uPassword.equals(uConfirmPassword)) {
+                        showMessage("Passwords do not match!");
+                    } else {
+                        User user = new User(uEmailAddress, uName, uPassword, false);
+                        if (mydb.doesUserExistSignUp(uEmailAddress)) {
+                            showMessage("User already exists with this email address!");
+                        } else {
+                            mydb.addUser(user);
+                            showMessage("User added!");
+                            //Open the corresponding activity
+                            //startActivity(new Intent(ThirdActivity.this, DonationPageActivity.class));
+                            startActivity(new Intent(ThirdActivity.this, MainActivity.class));
+                        }
+                    }
                 }
+
             }
         });
 

@@ -99,6 +99,20 @@ public class DBHelper extends SQLiteOpenHelper {
         return count >= 1;
     }
 
+    public Boolean doesUserExistSignUp(String emailId){
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + EMAIL_ID + " = ?";
+        String[] whereArgs = {emailId};
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, whereArgs);
+
+        int count = cursor.getCount();
+
+        cursor.close();
+
+        return count >= 1;
+    }
+
     public int deleteDatabase() {
         SQLiteDatabase database = getWritableDatabase();
         int rowsDeleted = database.delete(TABLE_NAME, "1", null);
