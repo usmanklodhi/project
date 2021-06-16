@@ -4,10 +4,10 @@ public class UserDonation {
     private String uEmailAddress;
     private String charityName;
     private Integer accountNumber;
-    private Integer accountPassword;
+    private String accountPassword;
     private Integer donationAmount;
 
-    public UserDonation(String uEmailAddress, String charityName, Integer accountNumber, Integer accountPassword, Integer donationAmount) {
+    public UserDonation(String uEmailAddress, String charityName, Integer accountNumber, String accountPassword, Integer donationAmount) {
         this.uEmailAddress = uEmailAddress;
         this.charityName = charityName;
         this.accountNumber = accountNumber;
@@ -39,11 +39,11 @@ public class UserDonation {
         this.accountNumber = accountNumber;
     }
 
-    public Integer getAccountPassword() {
+    public String getAccountPassword() {
         return accountPassword;
     }
 
-    public void setAccountPassword(Integer accountPassword) {
+    public void setAccountPassword(String accountPassword) {
         this.accountPassword = accountPassword;
     }
 

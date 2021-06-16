@@ -26,6 +26,14 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CHARITY_NAME = "CHARITY_NAME";
     public static final String CHARITY_DESC = "CHARITY_DESC";
 
+    //TABLE_NAME3 FOR USER_DONATION CLASS
+    public static final String TABLE_NAME3 = "USER_DONATION";
+    public static final String COLUMN_ID3 = "ID";
+    //Email address here in this order
+    public static final String CHARITY_NAME3 = "CHARITY_NAME";
+    public static final String ACCOUNT_NUMBER = "ACCOUNT_NUMBER";
+    public static final String ACCOUNT_PASSWORD = "ACCOUNT_PASSWORD";
+    public static final String DONATION_AMOUNT = "DONATION_AMOUNT";
 
     public DBHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -35,9 +43,11 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String createTableStatement = "CREATE TABLE " + TABLE_NAME + " (" + COLUMN_ID + " Integer Primary Key AUTOINCREMENT, " + EMAIL_ID + " text, " + FULL_NAME + " text, " + PASSWORD + " text, " + USER_TYPE + " BOOL)";
         String createTableStatement2 = "CREATE TABLE " + TABLE_NAME2 + " (" + COLUMN_ID2 + " Integer Primary Key AUTOINCREMENT, " + CHARITY_NAME + " text, " + CHARITY_DESC + " text)";
+        String createTableStatement3 = "CREATE TABLE " + TABLE_NAME3 + " (" + COLUMN_ID3 + " Integer Primary Key AUTOINCREMENT, " + EMAIL_ID + " text, " + CHARITY_NAME3 + " text, " + ACCOUNT_NUMBER + " INTEGER, " + ACCOUNT_PASSWORD + " text, " + DONATION_AMOUNT + " INTEGER)";
 
         sqLiteDatabase.execSQL(createTableStatement);
         sqLiteDatabase.execSQL(createTableStatement2);
+        sqLiteDatabase.execSQL(createTableStatement3);
     }
 
     @Override
@@ -129,8 +139,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public Boolean addCharity(Charity charity) {
         SQLiteDatabase database = getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(EMAIL_ID, charity.getCharityName());
-        cv.put(FULL_NAME, charity.getCharityDescription());
+        cv.put(CHARITY_NAME, charity.getCharityName());
+        cv.put(CHARITY_DESC, charity.getCharityDescription());
 
         long row;
         row = database.insert(TABLE_NAME2, null, cv);
@@ -154,6 +164,58 @@ public class DBHelper extends SQLiteOpenHelper {
 
         database.close();
         return charities;
+    }
+
+    public Boolean addDonation(UserDonation userDonation) {
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(EMAIL_ID, userDonation.getUEmailAddress());
+        cv.put(CHARITY_NAME3, userDonation.getCharityName());
+        cv.put(ACCOUNT_NUMBER, userDonation.getAccountNumber());
+        cv.put(ACCOUNT_PASSWORD, userDonation.getAccountPassword());
+        cv.put(DONATION_AMOUNT, userDonation.getDonationAmount());
+
+        long row;
+        row = database.insert(TABLE_NAME3, null, cv);
+        database.close();
+        return row != -1;
+    }
+
+    public ArrayList<UserDonation> getDonations(String userEmail) {
+        ArrayList<UserDonation> donations = new ArrayList<>();
+        String queryString = "Select * FROM " + TABLE_NAME3 + "where " + EMAIL_ID + " = "+ userEmail;
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor cursor = database.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                /*
+                String userEmail = cursor.getString(1);
+                String userFullName = cursor.getString(2);
+                String userPassword = cursor.getString(3);
+                Boolean isAdmin = cursor.getInt(4) == 1;
+                User user = new User(userEmail, userFullName, userPassword, isAdmin);
+                users.add(user);
+
+                private String uEmailAddress;
+                private String charityName;
+                private Integer accountNumber;
+                private String accountPassword;
+                private Integer donationAmount;
+                */
+
+                String uEmailAddress = cursor.getString(1);
+                String charityName = cursor.getString(2);
+                Integer accountNumber = cursor.getInt(3);
+                String accountPassword = cursor.getString(4);
+                Integer donationAmount = cursor.getInt(5);
+                donations.add(new UserDonation(uEmailAddress,charityName,accountNumber,accountPassword,donationAmount));
+
+            } while (cursor.moveToNext());
+        }
+
+        database.close();
+        return donations;
     }
 
     public int deleteDatabase() {
