@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     public Button btnSignUpUser;
     public Button btnLoginUser;
+    private DBHelper mydb;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -21,7 +22,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate");
-
+        mydb = new DBHelper(this);
+        // mydb.deleteDatabase();
         btnSignUpUser = findViewById(R.id.CreateAnAccountBtn);
         btnSignUpUser.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, ThirdActivity.class));

@@ -20,6 +20,13 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String PASSWORD = "PASSWORD";
     public static final String USER_TYPE = "USER_TYPE";
 
+    //TABLE_NAME2 FOR CHARITY CLASS
+    public static final String TABLE_NAME2 = "CHARITY";
+    public static final String COLUMN_ID2 = "ID";
+    public static final String CHARITY_NAME = "CHARITY_NAME";
+    public static final String CHARITY_DESC = "CHARITY_DESC";
+
+
     public DBHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
@@ -27,13 +34,18 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String createTableStatement = "CREATE TABLE " + TABLE_NAME + " (" + COLUMN_ID + " Integer Primary Key AUTOINCREMENT, " + EMAIL_ID + " text, " + FULL_NAME + " text, " + PASSWORD + " text, " + USER_TYPE + " BOOL)";
+        String createTableStatement2 = "CREATE TABLE " + TABLE_NAME2 + " (" + COLUMN_ID2 + " Integer Primary Key AUTOINCREMENT, " + CHARITY_NAME + " text, " + CHARITY_DESC + " text)";
+
         sqLiteDatabase.execSQL(createTableStatement);
+        sqLiteDatabase.execSQL(createTableStatement2);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         String dropTableQuery = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        String dropTableQuery2 = "DROP TABLE IF EXISTS " + TABLE_NAME2;
         sqLiteDatabase.execSQL(dropTableQuery);
+        sqLiteDatabase.execSQL(dropTableQuery2);
         onCreate(sqLiteDatabase);
     }
 
@@ -56,6 +68,7 @@ public class DBHelper extends SQLiteOpenHelper {
         database.close();
         return row != -1;
     }
+
 
     public Boolean deleteUser(User user) {
         SQLiteDatabase database = getWritableDatabase();
@@ -85,7 +98,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return users;
     }
 
-    public Boolean doesUserExist(String emailId, String password){
+    public Boolean doesUserExist(String emailId, String password) {
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + EMAIL_ID + " = ?" + " AND " + PASSWORD + " = ?";
         String[] whereArgs = {emailId, password};
 
@@ -99,7 +112,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return count >= 1;
     }
 
-    public Boolean doesUserExistSignUp(String emailId){
+    public Boolean doesUserExistSignUp(String emailId) {
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + EMAIL_ID + " = ?";
         String[] whereArgs = {emailId};
 
@@ -111,6 +124,36 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
 
         return count >= 1;
+    }
+
+    public Boolean addCharity(Charity charity) {
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(EMAIL_ID, charity.getCharityName());
+        cv.put(FULL_NAME, charity.getCharityDescription());
+
+        long row;
+        row = database.insert(TABLE_NAME2, null, cv);
+        database.close();
+        return row != -1;
+    }
+
+    public ArrayList<Charity> getCharities() {
+        ArrayList<Charity> charities = new ArrayList<>();
+        String queryString = "Select * FROM " + TABLE_NAME2;
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor cursor = database.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String cName = cursor.getString(1);
+                String cDesc = cursor.getString(2);
+                charities.add(new Charity(cName, cDesc));
+            } while (cursor.moveToNext());
+        }
+
+        database.close();
+        return charities;
     }
 
     public int deleteDatabase() {
