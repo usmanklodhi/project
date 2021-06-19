@@ -6,21 +6,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ListOfCharitiesRecyclerViewAdapter extends RecyclerView.Adapter<ListOfCharitiesRecyclerViewAdapter.ViewHolder> {
+public class ListOfCharitiesRecyclerViewAdapter extends RecyclerView.Adapter<ListOfCharitiesRecyclerViewAdapter.ViewHolder> implements Filterable {
     Context context;
     List<Charity> charityList;
-    private DBHelper db;
+    List<Charity> charityListFull;
     public ListOfCharitiesRecyclerViewAdapter(Context ct, List<Charity> charities) {
         context = ct;
         charityList= charities;
-
+        charityListFull = new ArrayList<>(charityList);
     }
     @NonNull
     @Override
@@ -45,6 +48,40 @@ public class ListOfCharitiesRecyclerViewAdapter extends RecyclerView.Adapter<Lis
     public int getItemCount() {
         return charityList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return charityFilter;
+    }
+
+    private Filter charityFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Charity> filteredList = new ArrayList<>();
+
+            if(constraint == null || constraint.length() == 0){
+                filteredList.addAll(charityListFull);
+            }else{
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Charity item : charityListFull){
+                    if(item.getCharityName().toLowerCase().contains(filterPattern)){
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return  results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            charityList.clear();
+            charityList.addAll((List) results.values);
+        }
+    };
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable

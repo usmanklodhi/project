@@ -1,6 +1,11 @@
 package com.example.project;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +31,7 @@ public class ListOfCharities extends AppCompatActivity {
     private List<Charity> charityList;
     private RequestQueue requestQueue;
     private RecyclerView recyclerView;
-
+    private ListOfCharitiesRecyclerViewAdapter adapter;
     //public Button  DonateButton;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +55,12 @@ public class ListOfCharities extends AppCompatActivity {
         charityList = new ArrayList<Charity>();
 
         fetchCharities();
+
+
     }
 
     private void fetchCharities(){
-        String url = "https://www.json-generator.com/api/json/get/bURvaXiKRe?indent=2";
+        String url = "https://awais753.github.io/json-host/ngos.json";
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -71,7 +78,7 @@ public class ListOfCharities extends AppCompatActivity {
                     }
 
                 }
-                ListOfCharitiesRecyclerViewAdapter adapter = new ListOfCharitiesRecyclerViewAdapter(ListOfCharities.this, charityList);
+                adapter = new ListOfCharitiesRecyclerViewAdapter(ListOfCharities.this, charityList);
 
                 recyclerView.setAdapter(adapter);
             }
@@ -84,7 +91,28 @@ public class ListOfCharities extends AppCompatActivity {
         requestQueue.add(jsonArrayRequest);
     }
 
-    public void donateClickListener(){
-        //db.is(new UserDonation());
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.list_of_charities_filter_menu,menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search_filter);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        return true;
     }
 }
