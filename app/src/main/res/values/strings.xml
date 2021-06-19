@@ -11,6 +11,10 @@
     <string name="enter_bank_account_id">Enter Bank Account ID</string>
     <string name="amount">Amount:</string>
     <string name="enter_amount">Enter Amount</string>
+    <string name="action_settings">Settings</string>
+    <string name="toolbar_title">Charities</string>
+    <string name="action_search">Search</string>
+    <string name="search_hint">Type Charity Name…</string>
     <string-array name="charityName">
         <item>Edhi</item>
     </string-array>
